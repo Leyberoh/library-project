@@ -64,12 +64,6 @@ router.get("/books/:bookId/edit", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-
-  /*Book.findById(bookId)
-    .then((bookToEdit) => {
-      res.render("books/book-edit.hbs", { book: bookToEdit });
-    })
-    .catch((error) => next(error));*/
 });
 
 // POST route to actually make updates on a specific book
