@@ -24,7 +24,19 @@ router.get("/books", (req, res, next) => {
 });
 
 // GET route to display the form
-router.get("/books/create", (req, res) => res.render("books/book-create.hbs"));
+router.get("/books/create", (req, res, next) => {
+  Author.find()
+    .then((authorsFromDB) => {
+      const data = {
+        authors: authorsFromDB,
+      };
+      res.render("books/book-create", data);
+    })
+    .catch((e) => {
+      console.log("Error getting list of authors from DB", e);
+      next(e);
+    });
+});
 
 // POST route to save a new book to the database in the books collection
 router.post("/books/create", (req, res, next) => {
