@@ -5,17 +5,21 @@
 {{! since we passed allTheBooksFromDB as `books`,
 we can iterate over it here with #each}}
 
-{{#each books}}
-  <div>
-    <h3>{{title}}</h3>
-    <p>By: {{this.author.name}}</p>
-    {{! additional book property }}
-    <a href="/books/{{_id}}">See details</a>
-    <a href="/books/{{_id}}/edit">Edit</a>
-    {{! link to redirect to the edit form for each specific book  }}
-    {{! link that points to the details page }}
-    <form action="/books/{{_id}}/delete" method="POST">
-      <button>Delete</button>
-    </form>
-  </div>
-{{/each}}
+<div class="page-wrapper">
+  {{#each books}}
+    <div class="book-block">
+      <h3>{{title}}</h3>
+      <p>By: {{this.author.name}}</p>
+      {{! additional book property }}
+      <div class="book-links">
+        <a href="/books/{{_id}}">See details</a>
+        <a href="/books/{{_id}}/edit">Edit</a>
+      </div>
+      {{! link to redirect to the edit form for each specific book  }}
+      {{! link that points to the details page }}
+      <form action="/books/{{_id}}/delete" method="POST">
+        <button>Delete</button>
+      </form>
+    </div>
+  {{/each}}
+</div>

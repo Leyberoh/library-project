@@ -48,14 +48,28 @@ router.post("/books/create", (req, res, next) => {
 });
 
 // GET route to display the form to update a specific book
-router.get("/books/:bookId/edit", (req, res, next) => {
+router.get("/books/:bookId/edit", async (req, res, next) => {
   const { bookId } = req.params;
 
-  Book.findById(bookId)
+  try {
+    const bookDetails = await Book.findById(bookId);
+    const authors = await Author.find();
+
+    const data = {
+      book: bookDetails,
+      authors: authors,
+    };
+
+    res.render("books/book-edit.hbs", data);
+  } catch (error) {
+    next(error);
+  }
+
+  /*Book.findById(bookId)
     .then((bookToEdit) => {
-      res.render("books/book-edit.hbs", { book: bookToEdit }); // <-- add this line
+      res.render("books/book-edit.hbs", { book: bookToEdit });
     })
-    .catch((error) => next(error));
+    .catch((error) => next(error));*/
 });
 
 // POST route to actually make updates on a specific book
