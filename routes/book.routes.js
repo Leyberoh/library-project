@@ -3,13 +3,14 @@
 const router = require("express").Router();
 
 const Book = require("../models/Book.model.js"); // <== add this line before your routes
+const Author = require("../models/Author.model");
 
 // GET route to retrieve and display all the books
 router.get("/books", (req, res, next) => {
   Book.find()
+    .populate("author")
     .then((allTheBooksFromDB) => {
       // -> allTheBooksFromDB is a placeholder, it can be any word
-      console.log("Retrieved books from DB:", allTheBooksFromDB);
 
       // we call the render method after we obtain the books data from the database -> allTheBooksFromDB
       res.render("books/books-list.hbs", { books: allTheBooksFromDB }); // pass `allTheBooksFromDB` to the view (as a variable books to be used in the HBS)
@@ -73,6 +74,7 @@ router.get("/books/:bookId", (req, res, next) => {
   const { bookId } = req.params;
 
   Book.findById(bookId)
+    .populate("author")
     .then((theBook) => res.render("books/book-details.hbs", { book: theBook }))
     .catch((error) => {
       console.log("Error while retrieving book details: ", error);

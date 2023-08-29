@@ -8,7 +8,7 @@ we can iterate over it here with #each}}
 {{#each books}}
   <div>
     <h3>{{title}}</h3>
-    <p>By: {{author}}</p>
+    <p>By: {{this.author.name}}</p>
     {{! additional book property }}
     <a href="/books/{{_id}}">See details</a>
     <a href="/books/{{_id}}/edit">Edit</a>
