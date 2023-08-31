@@ -5,6 +5,8 @@ const router = require("express").Router();
 const Book = require("../models/Book.model.js"); // <== add this line before your routes
 const Author = require("../models/Author.model");
 
+const isLoggedIn = require("../middleware/isLoggedIn.js");
+
 // GET route to retrieve and display all the books
 router.get("/books", (req, res, next) => {
   Book.find()
@@ -24,7 +26,7 @@ router.get("/books", (req, res, next) => {
 });
 
 // GET route to display the form
-router.get("/books/create", (req, res, next) => {
+router.get("/books/create", isLoggedIn, (req, res, next) => {
   Author.find()
     .then((authorsFromDB) => {
       const data = {
@@ -39,7 +41,7 @@ router.get("/books/create", (req, res, next) => {
 });
 
 // POST route to save a new book to the database in the books collection
-router.post("/books/create", (req, res, next) => {
+router.post("/books/create", isLoggedIn, (req, res, next) => {
   const { title, author, description, rating } = req.body;
 
   Book.create({ title, author, description, rating })
@@ -48,7 +50,7 @@ router.post("/books/create", (req, res, next) => {
 });
 
 // GET route to display the form to update a specific book
-router.get("/books/:bookId/edit", async (req, res, next) => {
+router.get("/books/:bookId/edit", isLoggedIn, async (req, res, next) => {
   const { bookId } = req.params;
 
   try {
@@ -67,7 +69,7 @@ router.get("/books/:bookId/edit", async (req, res, next) => {
 });
 
 // POST route to actually make updates on a specific book
-router.post("/books/:bookId/edit", (req, res, next) => {
+router.post("/books/:bookId/edit", isLoggedIn, (req, res, next) => {
   const { bookId } = req.params;
   const { title, description, author, rating } = req.body;
 
@@ -81,7 +83,7 @@ router.post("/books/:bookId/edit", (req, res, next) => {
 });
 
 // POST route to delete a book from the database
-router.post("/books/:bookId/delete", (req, res, next) => {
+router.post("/books/:bookId/delete", isLoggedIn, (req, res, next) => {
   const { bookId } = req.params;
 
   Book.findByIdAndDelete(bookId)
